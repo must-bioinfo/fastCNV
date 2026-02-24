@@ -14,9 +14,9 @@
 #'   When `"default"`, `prepareCountsForCNVAnalysis` is run only if the number
 #'   of cells/spots is below 60,000.
 #' @param aggregFactor The number of counts per spot desired (default = 15 000). If less than 1,000, will not run the `prepareCountsForCNVAnalysis` function.
-#' @param seuratClusterResolution The resolution wanted for the Seurat clusters (default = 0.8).
+#' @param clusterResolution The resolution wanted for the Seurat clusters (default = 0.8).
 #' @param aggregateByVar If `referenceVar` is given, determines whether to use it to pool the observations (default = `TRUE`).
-#' @param reClusterSeurat Whether to re-cluster if the Seurat object given already has a `seurat_clusters` slot in its metadata (default = `FALSE`).
+#' @param reCluster Whether to re-cluster if the Seurat object given already has a `seurat_clusters` slot in its metadata (default = `FALSE`).
 #' @param pooledReference Default is `TRUE`. Will build a pooled reference across all samples if `TRUE`.
 #' @param denoise If `TRUE`, the denoised data will be used in the heatmap (default = `TRUE`).
 #' @param scaleOnReferenceLabel If `TRUE`, scales the results depending on the normal observations (default = `TRUE`).
@@ -33,6 +33,7 @@
 #' @param getCNVClusters If `TRUE`, will perform clustering on the CNV scores and save them in the metadata of the Seurat object as `cnv_clusters`.
 #' @param k_clusters Optional. Number of clusters to cut the dendrogram into. If `NULL`, the optimal number of clusters is determined automatically using the elbow method.
 #' @param h_clusters Optional. The height at which to cut the dendrogram for clustering. If both `k` and `h` are provided, `k` takes precedence.
+#' @param cellTypesToCluster Optional. Cell type annotations to use for clustering. If `NULL` (default), all observations will be clustered.
 #' @param mergeCNV Logical. Whether to merge the highly correlated CNV clusters.
 #' @param mergeThreshold A numeric value between 0 and 1. Clusters with correlation greater than this threshold will be merged. Default is 0.98.
 #' @param doPlot If `TRUE`, will build a heatmap for each of the samples (default = `TRUE`).
@@ -58,9 +59,9 @@ fastCNV <- function (seuratObj,
 
                      prepareCounts = "default",
                      aggregFactor = 15000,
-                     seuratClusterResolution = 0.8,
+                     clusterResolution = 0.8,
                      aggregateByVar = TRUE,
-                     reClusterSeurat = FALSE,
+                     reCluster = FALSE,
 
                      pooledReference = TRUE,
                      scaleOnReferenceLabel = TRUE,
@@ -79,6 +80,7 @@ fastCNV <- function (seuratObj,
                      getCNVClusters = TRUE,
                      k_clusters = NULL,
                      h_clusters = NULL,
+                     cellTypesToCluster = NULL,
 
                      mergeCNV = TRUE,
                      mergeThreshold = 0.98,
@@ -121,8 +123,8 @@ fastCNV <- function (seuratObj,
                                                    referenceVar = referenceVar,
                                                    aggregateByVar = aggregateByVar ,
                                                    aggregFactor=aggregFactor,
-                                                   seuratClusterResolution = seuratClusterResolution,
-                                                   reClusterSeurat = reClusterSeurat  )
+                                                   clusterResolution = clusterResolution,
+                                                   reCluster = reCluster  )
       invisible(gc())
     }
     message(crayon::green(paste0("[",format(Sys.time(), "%Y-%m-%d %H:%M:%S"),"]"," Done !")))
@@ -168,10 +170,12 @@ fastCNV <- function (seuratObj,
   if (getCNVClusters == TRUE) {
     message(crayon::yellow(paste0("[",format(Sys.time(), "%Y-%m-%d %H:%M:%S"),"]"," Clustering CNVs...")))
     if (length(seuratObj) == 1) {
-      seuratObj <- CNVCluster(seuratObj, k = k_clusters, h = h_clusters)
+      seuratObj <- CNVCluster(seuratObj, k = k_clusters, h = h_clusters,
+                              referenceVar = referenceVar, cellTypesToCluster = cellTypesToCluster)
     } else {
       for (i in 1:length(seuratObj)) {
-        seuratObj[[i]] <- CNVCluster(seuratObj[[i]], k = k_clusters, h = h_clusters)
+        seuratObj[[i]] <- CNVCluster(seuratObj[[i]], k = k_clusters, h = h_clusters,
+                                     referenceVar = referenceVar, cellTypesToCluster = cellTypesToCluster)
       }
     }
     invisible(gc())

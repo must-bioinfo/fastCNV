@@ -12,8 +12,8 @@ prepareCountsForCNVAnalysis(
   referenceVar = NULL,
   aggregateByVar = T,
   aggregFactor = 15000,
-  seuratClusterResolution = 0.8,
-  reClusterSeurat = F
+  clusterResolution = 0.8,
+  reCluster = F
 )
 }
 \arguments{
@@ -27,9 +27,9 @@ prepareCountsForCNVAnalysis(
 
 \item{aggregFactor}{Integer. The target number of counts per observation (default = \verb{15 000}).}
 
-\item{seuratClusterResolution}{Numeric. The resolution used for Seurat clustering (default = \code{0.8}).}
+\item{clusterResolution}{Numeric. The resolution used for Seurat clustering (default = \code{0.8}).}
 
-\item{reClusterSeurat}{Logical. If \code{TRUE}, re-runs clustering on the Seurat object.}
+\item{reCluster}{Logical. If \code{TRUE}, re-runs clustering on the Seurat object.}
 }
 \value{
 A Seurat object with:

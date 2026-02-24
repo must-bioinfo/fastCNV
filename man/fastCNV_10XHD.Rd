@@ -25,6 +25,7 @@ fastCNV_10XHD(
   getCNVClusters = TRUE,
   k_clusters = NULL,
   h_clusters = NULL,
+  cellTypesToCluster = NULL,
   mergeCNV = TRUE,
   mergeThreshold = 0.98,
   doPlot = TRUE,
@@ -36,7 +37,6 @@ fastCNV_10XHD(
   clusters_palette = "default",
   splitPlotOnVar = clustersVar,
   referencePalette = "default",
-  raster_by_magick = requireNamespace("magick", quietly = TRUE),
   raster_resize_mat = TRUE
 )
 }
@@ -80,6 +80,8 @@ fastCNV_10XHD(
 \item{k_clusters}{Optional. Number of clusters to cut the dendrogram into. If \code{NULL}, the optimal number of clusters is determined automatically using the elbow method.}
 
 \item{h_clusters}{Optional. The height at which to cut the dendrogram for clustering. If both \code{k} and \code{h} are provided, \code{k} takes precedence.}
+
+\item{cellTypesToCluster}{Optional. Cell type annotations to use for clustering. If \code{NULL} (default), all observations will be clustered.}
 
 \item{mergeCNV}{Logical. Whether to merge the highly correlated CNV clusters.}
 

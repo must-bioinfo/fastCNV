@@ -7,6 +7,8 @@
 #' @param seuratObj A Seurat object containing a "genomicScores" assay with a matrix of genomic scores for clustering.
 #' @param k Optional. The number of clusters to cut the dendrogram into. If `NULL`, the optimal number of clusters is determined automatically using the elbow method.
 #' @param h Optional. The height at which to cut the dendrogram for clustering. If both `k` and `h` are provided, `k` takes precedence.
+#' @param referenceVar Optional. The name of the metadata column in the Seurat object that contains reference annotations. If `NULL`, all observations will be clustered.
+#' @param cellTypesToCluster Optional. Cell type annotations to use for clustering. If `NULL` (default), all observations will be clustered.
 #'
 #' @details
 #' The function computes a Manhattan distance matrix and performs hierarchical clustering using the Ward.D2 method.
@@ -26,10 +28,23 @@
 
 CNVCluster <- function(seuratObj,
                        k = NULL,
-                       h = NULL) {
+                       h = NULL,
+                       referenceVar = NULL,
+                       cellTypesToCluster = NULL) {
 
   if (is.null(k)){kDetection = "automatic"}
   if (!is.null(k)){kDetection = "manual"}
+
+  if (!is.null(referenceVar) && !is.null(cellTypesToCluster)) {
+    if (length(which(seuratObj@meta.data[[referenceVar]] %in% cellTypesToCluster)) == 0) {
+      message("No observations found corresponding to the cellTypesToCluster. Clustering all observations instead.")
+    } else {
+      seuratObj_orig <- seuratObj
+      seuratObj <- suppressWarnings(suppressMessages(subset(seuratObj, cells = Seurat::Cells(seuratObj)[which(seuratObj@meta.data[[referenceVar]] %in% cellTypesToCluster)])))
+    }
+  } else {
+    seuratObj_orig <- seuratObj
+  }
 
   if (length(Seurat::Cells(seuratObj,assay = "genomicScores")) < 30000) {
     genomicMatrix <- t(as.matrix(Seurat::GetAssay(seuratObj, assay = "genomicScores")$data))
@@ -77,11 +92,13 @@ CNVCluster <- function(seuratObj,
     clusters <- cutree(hc, k = k, h = h)
 
     seuratObj$cnv_clusters = as.factor(clusters)
-
+    seuratObj_orig@meta.data$cnv_clusters <- 0
+    seuratObj_orig@meta.data[Seurat::Cells(seuratObj), "cnv_clusters"] = seuratObj$cnv_clusters
+    seuratObj_orig$cnv_clusters <- as.factor(seuratObj_orig$cnv_clusters)
 
   } else {
 
-    mat <- GetAssayData(seuratObj, assay = "genomicScores", layer = "data")
+    mat <- as.matrix(Seurat::GetAssayData(seuratObj, assay = "genomicScores", layer = "data"))
     pca_res <- prcomp(t(mat), center = TRUE, scale. = TRUE)
     X <- pca_res$x[, 1:30]
 
@@ -99,11 +116,15 @@ CNVCluster <- function(seuratObj,
     }
 
     km <- kmeans(X, centers = k, iter.max = 100)
-    seuratObj$cnv_clusters <- NA
-    seuratObj$cnv_clusters[colnames(mat)] <- km$cluster
+
+    seuratObj_orig$cnv_clusters <- NA
+    seuratObj_orig$cnv_clusters[colnames(seuratObj_orig@assays$genomicScores)] <- 0
+    seuratObj_orig$cnv_clusters[colnames(mat)] <- km$cluster
+    seuratObj_orig$cnv_clusters <- as.factor(seuratObj_orig$cnv_clusters)
+
   }
 
-  return(seuratObj)
+  return(seuratObj_orig)
 }
 
 

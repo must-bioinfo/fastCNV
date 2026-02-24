@@ -25,6 +25,7 @@
 #' @param getCNVClusters If `TRUE`, will perform clustering on the CNV scores and save them in the metadata of the Seurat object as `cnv_clusters`.
 #' @param k_clusters Optional. Number of clusters to cut the dendrogram into. If `NULL`, the optimal number of clusters is determined automatically using the elbow method.
 #' @param h_clusters Optional. The height at which to cut the dendrogram for clustering. If both `k` and `h` are provided, `k` takes precedence.
+#' @param cellTypesToCluster Optional. Cell type annotations to use for clustering. If `NULL` (default), all observations will be clustered.
 #' @param mergeCNV Logical. Whether to merge the highly correlated CNV clusters.
 #' @param mergeThreshold A numeric value between 0 and 1. Clusters with correlation greater than this threshold will be merged. Default is 0.98.
 #' @param doPlot If `TRUE`, will build a heatmap for each of the samples (default = `TRUE`).
@@ -70,6 +71,7 @@ fastCNV_10XHD <- function(seuratObjHD,
                           getCNVClusters = TRUE,
                           k_clusters = NULL,
                           h_clusters = NULL,
+                          cellTypesToCluster = NULL,
 
                           mergeCNV = TRUE,
                           mergeThreshold = 0.98,
@@ -166,14 +168,18 @@ fastCNV_10XHD <- function(seuratObjHD,
       Seurat::DefaultAssay(seuratObjHD) = assay
       seuratObjHD <- CNVCluster(seuratObj = seuratObjHD,
                                 k = k_clusters,
-                                h = h_clusters)
+                                h = h_clusters,
+                                referenceVar = referenceVar,
+                                cellTypesToCluster = cellTypesToCluster)
       invisible(gc())
     } else if (length(seuratObjHD) > 1) {
       for (i in 1:length(seuratObjHD)){
         Seurat::DefaultAssay(seuratObjHD[[i]]) = assay
         seuratObjHD[[i]] <- CNVCluster(seuratObj = seuratObjHD[[i]],
                                   k = k_clusters,
-                                  h = h_clusters)
+                                  h = h_clusters,
+                                  referenceVar = referenceVar,
+                                  cellTypesToCluster = cellTypesToCluster)
         invisible(gc())
       }
     }

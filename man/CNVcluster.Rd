@@ -4,7 +4,13 @@
 \alias{CNVCluster}
 \title{Perform CNV Clustering with Seurat Object}
 \usage{
-CNVCluster(seuratObj, k = NULL, h = NULL)
+CNVCluster(
+  seuratObj,
+  k = NULL,
+  h = NULL,
+  referenceVar = NULL,
+  cellTypesToCluster = NULL
+)
 }
 \arguments{
 \item{seuratObj}{A Seurat object containing a "genomicScores" assay with a matrix of genomic scores for clustering.}
@@ -12,6 +18,10 @@ CNVCluster(seuratObj, k = NULL, h = NULL)
 \item{k}{Optional. The number of clusters to cut the dendrogram into. If \code{NULL}, the optimal number of clusters is determined automatically using the elbow method.}
 
 \item{h}{Optional. The height at which to cut the dendrogram for clustering. If both \code{k} and \code{h} are provided, \code{k} takes precedence.}
+
+\item{referenceVar}{Optional. The name of the metadata column in the Seurat object that contains reference annotations. If \code{NULL}, all observations will be clustered.}
+
+\item{cellTypesToCluster}{Optional. Cell type annotations to use for clustering. If \code{NULL} (default), all observations will be clustered.}
 }
 \value{
 A Seurat object with an additional metadata column, \code{cnv_clusters}, containing the cluster assignments.

@@ -12,9 +12,9 @@ fastCNV(
   assay = NULL,
   prepareCounts = "default",
   aggregFactor = 15000,
-  seuratClusterResolution = 0.8,
+  clusterResolution = 0.8,
   aggregateByVar = TRUE,
-  reClusterSeurat = FALSE,
+  reCluster = FALSE,
   pooledReference = TRUE,
   scaleOnReferenceLabel = TRUE,
   thresholdPercentile = 0.01,
@@ -30,6 +30,7 @@ fastCNV(
   getCNVClusters = TRUE,
   k_clusters = NULL,
   h_clusters = NULL,
+  cellTypesToCluster = NULL,
   mergeCNV = TRUE,
   mergeThreshold = 0.98,
   doPlot = TRUE,
@@ -60,11 +61,11 @@ of cells/spots is below 60,000.}
 
 \item{aggregFactor}{The number of counts per spot desired (default = 15 000). If less than 1,000, will not run the \code{prepareCountsForCNVAnalysis} function.}
 
-\item{seuratClusterResolution}{The resolution wanted for the Seurat clusters (default = 0.8).}
+\item{clusterResolution}{The resolution wanted for the Seurat clusters (default = 0.8).}
 
 \item{aggregateByVar}{If \code{referenceVar} is given, determines whether to use it to pool the observations (default = \code{TRUE}).}
 
-\item{reClusterSeurat}{Whether to re-cluster if the Seurat object given already has a \code{seurat_clusters} slot in its metadata (default = \code{FALSE}).}
+\item{reCluster}{Whether to re-cluster if the Seurat object given already has a \code{seurat_clusters} slot in its metadata (default = \code{FALSE}).}
 
 \item{pooledReference}{Default is \code{TRUE}. Will build a pooled reference across all samples if \code{TRUE}.}
 
@@ -95,6 +96,8 @@ of cells/spots is below 60,000.}
 \item{k_clusters}{Optional. Number of clusters to cut the dendrogram into. If \code{NULL}, the optimal number of clusters is determined automatically using the elbow method.}
 
 \item{h_clusters}{Optional. The height at which to cut the dendrogram for clustering. If both \code{k} and \code{h} are provided, \code{k} takes precedence.}
+
+\item{cellTypesToCluster}{Optional. Cell type annotations to use for clustering. If \code{NULL} (default), all observations will be clustered.}
 
 \item{mergeCNV}{Logical. Whether to merge the highly correlated CNV clusters.}
 

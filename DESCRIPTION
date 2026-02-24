@@ -1,6 +1,6 @@
 Package: fastCNV
 Title: fastCNV
-Version: 1.1.6
+Version: 1.1.9
 Authors@R: 
     c(person("Gadea", "Cabrejas", , "gadea.cabrejas-saiz@u-paris.fr", role = c("aut", "cre")),
       person("Clarice", "Groeneveld", , "clarice.groeneveld@inserm.fr", role = c("aut", "ctb")))
@@ -12,6 +12,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 biocViews: 
 Imports: 
+    Banksy,
     biomaRt,
     circlize,
     crayon,
@@ -24,11 +25,13 @@ Imports:
     grid,
     magick,
     ragg,
+    R.utils,
     paletteer,
     purrr,
     scales,
     Seurat,
     SeuratObject,
+    SeuratWrappers,
     stats,
     stringr,
     ape,

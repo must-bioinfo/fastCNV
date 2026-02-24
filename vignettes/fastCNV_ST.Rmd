@@ -35,6 +35,8 @@ remotes::install_github("must-bioinfo/fastCNVdata")
 ```{r load}
 library(fastCNV)
 library(fastCNVdata)
+library(Seurat)
+library(SeuratWrappers)
 ```
 
 ## Load the example data
@@ -190,7 +192,7 @@ SpatialDimPlot(STColon1, group.by = "cnv_clusters", pt.size.factor = 3)
 library(ggplot2)
 library(SeuratObject)
 
-ggplot(FetchData(STColon1, vars = c("cnv_clusters", "annot")), aes(annot, fill = cnv_clusters)) +
+ggplot(FetchData(STColon1, vars = c("cnv_clusters", "annot")), aes(annot, fill = as.factor(cnv_clusters))) +
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, color = "black"))
 ```
@@ -201,7 +203,7 @@ We find that tumor cells are virtually always cnv_cluster 2, 3, 4 or 5 ; meanwhi
 
 ## CNV tree
 
-We can see there are 4 tumor subclusters (2, 3, 4 and 5) in STColon1, and 1 healthy subcluster (1). 
+We can see there are 2 tumor subclusters (2 and 3) in STColon1, and 1 healthy subcluster (1). 
 
 In this part of the vignette, we will show how to plot the CNV subclonality tree. CNV clusters are needed. 
 

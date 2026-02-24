@@ -144,16 +144,31 @@ SpatialFeaturePlot(HDBreast, features = "8.q_CNV") +
 
 ## CNV clusters
 
-In addition to the CNV fraction, fastCNV can also compute the CNV clusters. These can be plotted with the Seurat plotting functions.
+In addition to the CNV fraction, fastCNV also computes the CNV clusters. These can be plotted with the Seurat plotting functions.
 
 
 ```{r plot_cnv_clusters, fig.width=5, fig.height=4}
-HDBreast <- CNVCluster(HDBreast)
-HDBreast <- mergeCNVClusters(HDBreast, mergeThreshold = 0.95)
+SpatialDimPlot(HDBreast, group.by = "cnv_clusters") 
+```
+Here, we see many different CNV clusters with minimal variability. 
+We can compute the clusters only taking into account some annotations ("tumor" here for example)  
+
+```{r new_clusters, fig.width=5, fig.height=4}
+# To do the clustering with only certain annotations : 
+HDBreast <- CNVCluster(HDBreast, referenceVar = "projected_annots_8um",
+                       cellTypesToCluster = "Tumor")
+
+SpatialDimPlot(HDBreast, group.by = "cnv_clusters") 
+
+```
+
+Or merge the clusters with great correlation.
+```{r new_clusters2, fig.width=5, fig.height=4}
+# To merge the clusters with high correlation
+HDBreast <- mergeCNVClusters(HDBreast, mergeThreshold = 0.95) #adjust the thershold to your liking
 
 SpatialDimPlot(HDBreast, group.by = "cnv_clusters") 
 ```
-
 
 ```{r cnv_props, fig.width=5, fig.height=4}
 library(ggplot2)
@@ -165,7 +180,7 @@ ggplot(FetchData(HDBreast, vars = c("cnv_clusters", "projected_annots_8um")), ae
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, color = "black"))
 ```
 
-Once we have the clusters, we can do the CNV heatmap again to visualize the clusters in it too.
+Once we have the desired clusters, we can do the CNV heatmap again to visualize the new clusters in it.
 
 ```{r cnvheatmapt_clusters, fig.width=8, fig.height=6}
 plotCNVResultsHD(HDBreast, referenceVar = "projected_annots_8um", printPlot = TRUE)
@@ -186,7 +201,7 @@ We build the tree, using `CNVTree()`. It contains the following functions :
   - `plotCNVTree()` will output the tree. 
 
 ```{r tree_cnv, fig.width=7, fig.height=5}
-tree_data <- CNVTree(HDBreast, values ="calls", cnv_thresh = 0.09, healthyClusters = c("5","6"))
+tree_data <- CNVTree(HDBreast, values ="calls", cnv_thresh = 0.09, healthyClusters = "1")
 
 
 ```

@@ -197,7 +197,7 @@ DimPlot(scColon1, group.by = "cnv_clusters") + common_theme
 ```{r cnv_props, fig.width = 6, fig.height = 4}
 library(SeuratObject)
 
-ggplot(FetchData(scColon1, vars = c("cnv_clusters", "annot")), aes(annot, fill = cnv_clusters)) +
+ggplot(FetchData(scColon1, vars = c("cnv_clusters", "annot")), aes(annot, fill = as.factor(cnv_clusters))) +
   geom_bar(position = "fill") +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, color = "black"))
 ```
