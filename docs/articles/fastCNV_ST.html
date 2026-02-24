@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fastCNV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +93,9 @@ and load the <code>fastCNVdata</code> package.</p>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"must-bioinfo/fastCNVdata"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://must-bioinfo.github.io/fastCNV">fastCNV</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fastCNVdata</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fastCNVdata</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat" class="external-link">Seurat</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SeuratWrappers</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="load-the-example-data">Load the example data<a class="anchor" aria-label="anchor" href="#load-the-example-data"></a>
@@ -175,8 +177,17 @@ object only, taking as reference the spots labeled
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">STColon1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fastCNV.html">fastCNV</a></span><span class="op">(</span><span class="va">STColon1</span>, sampleName <span class="op">=</span> <span class="st">"STColon1"</span>, referenceVar <span class="op">=</span> <span class="st">"annot"</span>,</span>
 <span>                      referenceLabel <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"epithelium&amp;submucosa"</span>,<span class="st">"submucosa"</span>,<span class="st">"non neo epithelium"</span><span class="op">)</span>, </span>
-<span>                      printPlot <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/run1-1.png" width="768"></p>
+<span>                      printPlot <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of nodes: 2052</span></span>
+<span><span class="co">#&gt; Number of edges: 59198</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running Louvain algorithm...</span></span>
+<span><span class="co">#&gt; Maximum modularity in 10 random starts: 0.8424</span></span>
+<span><span class="co">#&gt; Number of communities: 15</span></span>
+<span><span class="co">#&gt; Elapsed time: 0 seconds</span></span></code></pre></div>
+<p><img src="fastCNV_ST_files/figure-html/run1-1.png" alt="" width="768"></p>
 <p>We are now going to run the <code><a href="../reference/fastCNV.html">fastCNV()</a></code> function on a list
 of Seurat objects. When <code><a href="../reference/fastCNV.html">fastCNV()</a></code> is run on a list of
 Seurat objects with the default parameters, it builds a pooled reference
@@ -190,8 +201,35 @@ containing any healthy spots to build its own reference.</p>
 <span>                     <span class="st">"squamous epithelium"</span>, <span class="st">"epithelium&amp;lam propria"</span>, <span class="st">"lamina propria"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">seuratList</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fastCNV.html">fastCNV</a></span><span class="op">(</span><span class="va">seuratList</span>, <span class="va">sampleNames</span>, referenceVar <span class="op">=</span> <span class="st">"annot"</span>, </span>
-<span>                      referenceLabel <span class="op">=</span> <span class="va">referencelabels</span>, printPlot <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/run2-1.png" width="768"><img src="fastCNV_ST_files/figure-html/run2-2.png" width="768"><img src="fastCNV_ST_files/figure-html/run2-3.png" width="768"></p>
+<span>                      referenceLabel <span class="op">=</span> <span class="va">referencelabels</span>, printPlot <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of nodes: 2317</span></span>
+<span><span class="co">#&gt; Number of edges: 63839</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running Louvain algorithm...</span></span>
+<span><span class="co">#&gt; Maximum modularity in 10 random starts: 0.8406</span></span>
+<span><span class="co">#&gt; Number of communities: 15</span></span>
+<span><span class="co">#&gt; Elapsed time: 0 seconds</span></span>
+<span><span class="co">#&gt; Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of nodes: 1574</span></span>
+<span><span class="co">#&gt; Number of edges: 50141</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running Louvain algorithm...</span></span>
+<span><span class="co">#&gt; Maximum modularity in 10 random starts: 0.8186</span></span>
+<span><span class="co">#&gt; Number of communities: 12</span></span>
+<span><span class="co">#&gt; Elapsed time: 0 seconds</span></span>
+<span><span class="co">#&gt; Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Number of nodes: 1485</span></span>
+<span><span class="co">#&gt; Number of edges: 42335</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Running Louvain algorithm...</span></span>
+<span><span class="co">#&gt; Maximum modularity in 10 random starts: 0.8195</span></span>
+<span><span class="co">#&gt; Number of communities: 12</span></span>
+<span><span class="co">#&gt; Elapsed time: 0 seconds</span></span></code></pre></div>
+<p><img src="fastCNV_ST_files/figure-html/run2-1.png" alt="" width="768"><img src="fastCNV_ST_files/figure-html/run2-2.png" alt="" width="768"><img src="fastCNV_ST_files/figure-html/run2-3.png" alt="" width="768"></p>
 </div>
 <div class="section level2">
 <h2 id="cnv-fraction">CNV fraction<a class="anchor" aria-label="anchor" href="#cnv-fraction"></a>
@@ -203,7 +241,7 @@ Seurat spatial plotting functions, as we’ll demonstrate on STColon1:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat" class="external-link">Seurat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialFeaturePlot</a></span><span class="op">(</span><span class="va">STColon1</span>, <span class="st">"cnv_fraction"</span>, pt.size.factor <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialPlot</a></span><span class="op">(</span><span class="va">STColon1</span>, group.by <span class="op">=</span> <span class="st">"annot"</span>, pt.size.factor <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/plot_cnv_fraction-1.png" width="768"></p>
+<p><img src="fastCNV_ST_files/figure-html/plot_cnv_fraction-1.png" alt="" width="768"></p>
 <p>Here, we see some zones with much higher CNV fractions than others.
 We can directly plot and test this:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -212,7 +250,7 @@ We can directly plot and test this:</p>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">annot</span>, <span class="va">cnv_fraction</span>, fill <span class="op">=</span> <span class="va">annot</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">1</span>, hjust <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/plot_cnv_fraction2-1.png" width="576"></p>
+<p><img src="fastCNV_ST_files/figure-html/plot_cnv_fraction2-1.png" alt="" width="576"></p>
 <p>We can also plot the CNV per chromosome arm with the plotting
 functions from Seurat.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -228,7 +266,7 @@ functions from Seurat.</p>
 <span>                       rescaler <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">to</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">from</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
 <span>                         <span class="fu"><a href="https://scales.r-lib.org/reference/rescale_mid.html" class="external-link">rescale_mid</a></span><span class="op">(</span><span class="va">x</span>, to <span class="op">=</span> <span class="va">to</span>, mid <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span>                       <span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/plot_cnv_per_chromosome-1.png" width="672"></p>
+<p><img src="fastCNV_ST_files/figure-html/plot_cnv_per_chromosome-1.png" alt="" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="cnv-classification">CNV classification<a class="anchor" aria-label="anchor" href="#cnv-classification"></a>
@@ -253,7 +291,7 @@ alteration).</p>
 <span>  <span class="va">common_theme</span> <span class="op">|</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialDimPlot</a></span><span class="op">(</span><span class="va">STColon1</span>, group.by <span class="op">=</span> <span class="st">"6.q_CNV_classification"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>gain <span class="op">=</span> <span class="st">"red"</span>, no_alteration <span class="op">=</span> <span class="st">"grey"</span>, loss <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="va">common_theme</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/cnv_classification-1.png" width="672"></p>
+<p><img src="fastCNV_ST_files/figure-html/cnv_classification-1.png" alt="" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="cnv-clusters">CNV clusters<a class="anchor" aria-label="anchor" href="#cnv-clusters"></a>
@@ -263,15 +301,15 @@ clusters and saves them in the Seurat object metadata as “cnv_clusters”.
 These can be plotted with the Seurat plotting functions.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialDimPlot</a></span><span class="op">(</span><span class="va">STColon1</span>, group.by <span class="op">=</span> <span class="st">"cnv_clusters"</span>, pt.size.factor <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/plot_cnv_clusters-1.png" width="480"></p>
+<p><img src="fastCNV_ST_files/figure-html/plot_cnv_clusters-1.png" alt="" width="480"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.github.io/seurat-object/" class="external-link">SeuratObject</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://satijalab.github.io/seurat-object/reference/FetchData.html" class="external-link">FetchData</a></span><span class="op">(</span><span class="va">STColon1</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cnv_clusters"</span>, <span class="st">"annot"</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">annot</span>, fill <span class="op">=</span> <span class="va">cnv_clusters</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://satijalab.github.io/seurat-object/reference/FetchData.html" class="external-link">FetchData</a></span><span class="op">(</span><span class="va">STColon1</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cnv_clusters"</span>, <span class="st">"annot"</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">annot</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">cnv_clusters</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"fill"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">1</span>, hjust <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/cnv_props-1.png" width="480"></p>
+<p><img src="fastCNV_ST_files/figure-html/cnv_props-1.png" alt="" width="480"></p>
 <p>We find that tumor cells are virtually always cnv_cluster 2, 3, 4 or
 5 ; meanwhile, healthy cells tend to be cnv_cluster 1 which present very
 few or no CNV.</p>
@@ -279,8 +317,8 @@ few or no CNV.</p>
 <div class="section level2">
 <h2 id="cnv-tree">CNV tree<a class="anchor" aria-label="anchor" href="#cnv-tree"></a>
 </h2>
-<p>We can see there are 4 tumor subclusters (2, 3, 4 and 5) in STColon1,
-and 1 healthy subcluster (1).</p>
+<p>We can see there are 2 tumor subclusters (2 and 3) in STColon1, and 1
+healthy subcluster (1).</p>
 <p>In this part of the vignette, we will show how to plot the CNV
 subclonality tree. CNV clusters are needed.</p>
 <p>We build the tree, using <code><a href="../reference/CNVTree.html">CNVTree()</a></code>. It contains the
@@ -298,7 +336,7 @@ in the tree.</p></li>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">tree_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CNVTree.html">CNVTree</a></span><span class="op">(</span><span class="va">STColon1</span>, values <span class="op">=</span> <span class="st">"calls"</span>, cnv_thresh <span class="op">=</span> <span class="fl">0.09</span>, healthyClusters <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_ST_files/figure-html/tree_cnv-1.png" width="672"></p>
+<p><img src="fastCNV_ST_files/figure-html/tree_cnv-1.png" alt="" width="672"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -311,7 +349,7 @@ in the tree.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

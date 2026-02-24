@@ -11,7 +11,7 @@ generating and saving plots."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">fastCNV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,13 +73,10 @@ generating and saving plots.</p>
 <span>  genesToForce <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  regionToForce <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  getCNVPerChromosomeArm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  getCNVClusters <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  tumorLabel <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  getCNVClusters <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  k_clusters <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  h_clusters <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  plotDendrogram <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plotClustersOnDendrogram <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  plotElbowPlot <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cellTypesToCluster <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mergeCNV <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  mergeThreshold <span class="op">=</span> <span class="fl">0.98</span>,</span>
 <span>  doPlot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -90,7 +87,8 @@ generating and saving plots.</p>
 <span>  clustersVar <span class="op">=</span> <span class="st">"cnv_clusters"</span>,</span>
 <span>  clusters_palette <span class="op">=</span> <span class="st">"default"</span>,</span>
 <span>  splitPlotOnVar <span class="op">=</span> <span class="va">clustersVar</span>,</span>
-<span>  referencePalette <span class="op">=</span> <span class="st">"default"</span></span>
+<span>  referencePalette <span class="op">=</span> <span class="st">"default"</span>,</span>
+<span>  raster_resize_mat <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -170,10 +168,6 @@ generating and saving plots.</p>
 <dd><p>If <code>TRUE</code>, will perform clustering on the CNV scores and save them in the metadata of the Seurat object as <code>cnv_clusters</code>.</p></dd>
 
 
-<dt id="arg-tumorlabel">tumorLabel<a class="anchor" aria-label="anchor" href="#arg-tumorlabel"></a></dt>
-<dd><p>The label within <code>referenceVar</code> that specifies the tumor/malignant population (can be any type of annotation).</p></dd>
-
-
 <dt id="arg-k-clusters">k_clusters<a class="anchor" aria-label="anchor" href="#arg-k-clusters"></a></dt>
 <dd><p>Optional. Number of clusters to cut the dendrogram into. If <code>NULL</code>, the optimal number of clusters is determined automatically using the elbow method.</p></dd>
 
@@ -182,16 +176,8 @@ generating and saving plots.</p>
 <dd><p>Optional. The height at which to cut the dendrogram for clustering. If both <code>k</code> and <code>h</code> are provided, <code>k</code> takes precedence.</p></dd>
 
 
-<dt id="arg-plotdendrogram">plotDendrogram<a class="anchor" aria-label="anchor" href="#arg-plotdendrogram"></a></dt>
-<dd><p>Logical. Whether to plot the dendrogram (default = <code>FALSE</code>).</p></dd>
-
-
-<dt id="arg-plotclustersondendrogram">plotClustersOnDendrogram<a class="anchor" aria-label="anchor" href="#arg-plotclustersondendrogram"></a></dt>
-<dd><p>Logical. Whether to highlight clusters on the dendrogram (default = <code>FALSE</code>).</p></dd>
-
-
-<dt id="arg-plotelbowplot">plotElbowPlot<a class="anchor" aria-label="anchor" href="#arg-plotelbowplot"></a></dt>
-<dd><p>Logical. Whether to plot the elbow plot used for determining the optimal number of clusters (default = <code>FALSE</code>).</p></dd>
+<dt id="arg-celltypestocluster">cellTypesToCluster<a class="anchor" aria-label="anchor" href="#arg-celltypestocluster"></a></dt>
+<dd><p>Optional. Cell type annotations to use for clustering. If <code>NULL</code> (default), all observations will be clustered.</p></dd>
 
 
 <dt id="arg-mergecnv">mergeCNV<a class="anchor" aria-label="anchor" href="#arg-mergecnv"></a></dt>
@@ -239,6 +225,11 @@ You can provide a custom palette as a vector of color codes (e.g., <code>c("#F87
 <dd><p>A color palette for <code>referenceVar</code>.
 You can provide a custom palette as a vector of color codes (e.g., <code>c("#FF0000", "#00FF00")</code>).</p></dd>
 
+
+<dt id="arg-raster-resize-mat">raster_resize_mat<a class="anchor" aria-label="anchor" href="#arg-raster-resize-mat"></a></dt>
+<dd><p>Whether resize the matrix to let the dimension of the matrix the same as the dimension of the raster image.
+Default is TRUE.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -254,7 +245,7 @@ You can provide a custom palette as a vector of color codes (e.g., <code>c("#FF0
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

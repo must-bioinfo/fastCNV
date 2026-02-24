@@ -11,7 +11,7 @@ improving Copy Number Variation (CNV) computation."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">fastCNV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,8 +61,8 @@ improving Copy Number Variation (CNV) computation.</p>
 <span>  referenceVar <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  aggregateByVar <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  aggregFactor <span class="op">=</span> <span class="fl">15000</span>,</span>
-<span>  seuratClusterResolution <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span>  reClusterSeurat <span class="op">=</span> <span class="cn">F</span></span>
+<span>  clusterResolution <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  reCluster <span class="op">=</span> <span class="cn">F</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -90,11 +90,11 @@ improving Copy Number Variation (CNV) computation.</p>
 <dd><p>Integer. The target number of counts per observation (default = <code>15 000</code>).</p></dd>
 
 
-<dt id="arg-seuratclusterresolution">seuratClusterResolution<a class="anchor" aria-label="anchor" href="#arg-seuratclusterresolution"></a></dt>
+<dt id="arg-clusterresolution">clusterResolution<a class="anchor" aria-label="anchor" href="#arg-clusterresolution"></a></dt>
 <dd><p>Numeric. The resolution used for Seurat clustering (default = <code>0.8</code>).</p></dd>
 
 
-<dt id="arg-reclusterseurat">reClusterSeurat<a class="anchor" aria-label="anchor" href="#arg-reclusterseurat"></a></dt>
+<dt id="arg-recluster">reCluster<a class="anchor" aria-label="anchor" href="#arg-recluster"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, re-runs clustering on the Seurat object.</p></dd>
 
 </dl></div>
@@ -113,7 +113,7 @@ improving Copy Number Variation (CNV) computation.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

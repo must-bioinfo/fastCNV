@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">fastCNV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,7 +111,7 @@ and load the <code>fastCNVdata</code> package.</p>
 <p>You can load a separate annotation file for your dataset. It’s
 usefull to have annotated spots for the analysis.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Import the annotation file corresponding to your sample. For 10X ST data you can annotate your spots with LoupeBrowser</span></span>
+<code class="sourceCode R"><span><span class="co"># Import the annotation file corresponding to your sample. For 10X ST data you can annotate your spots with LoupeBrowser. The example data already has the annotations in it. </span></span>
 <span><span class="va">annotation_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"/path/to/your/annotations/for/VisiumHD.csv"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">HDBreast</span><span class="op">[[</span><span class="st">"annots_8um"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">annotation_file</span><span class="op">$</span><span class="va">Annotations</span></span></code></pre></div>
@@ -124,9 +124,10 @@ reference.</p>
 <span><span class="co">#&gt; s_016um_00107_00066-1           </span></span>
 <span><span class="co">#&gt; s_008um_00269_00526-1    NoTumor</span></span>
 <span><span class="co">#&gt; s_008um_00260_00253-1      Tumor</span></span></code></pre></div>
-<p>fastCNV will use by default the 16um assay, so if your annotations
-are done on the 8um resolution you will need to run this function before
-running fastCNV on the 16um assay.</p>
+<p>fastCNV will use by default the 16µm assay, so if your annotations
+are done on the 8µm resolution you will need to run this function before
+running fastCNV on the 16µm assay. This function maps the annotations
+from the 8µm resolution to the 16µm resolution.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">HDBreast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotations8umTo16um.html">annotations8umTo16um</a></span><span class="op">(</span><span class="va">HDBreast</span>, referenceVar <span class="op">=</span> <span class="st">"annots_8um"</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; [1] "New annotation column (new referenceVar) is named : projected_annots_8um."</span></span></code></pre></div>
@@ -136,7 +137,7 @@ This will be the referenceVar we will use from now on.</p>
 <p>You can check if the projected annotations are correct by doing</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialDimPlot</a></span><span class="op">(</span><span class="va">HDBreast</span>, group.by <span class="op">=</span> <span class="st">"projected_annots_8um"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/spatialdimplot_annotations-1.png" width="768"></p>
+<p><img src="fastCNV_HD_files/figure-html/spatialdimplot_annotations-1.png" alt="" width="768"></p>
 </div>
 <div class="section level2">
 <h2 id="run-fastcnv">Run fastCNV<a class="anchor" aria-label="anchor" href="#run-fastcnv"></a>
@@ -165,7 +166,7 @@ The reference should be the non-tumor spots, here “NoTumor”.
 <strong>Warning</strong> : This can be very RAM demanding.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">HDBreast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fastCNV_10XHD.html">fastCNV_10XHD</a></span><span class="op">(</span><span class="va">HDBreast</span>, sampleName <span class="op">=</span> <span class="st">"HDBreast"</span>, referenceVar <span class="op">=</span> <span class="st">"projected_annots_8um"</span>, referenceLabel <span class="op">=</span> <span class="st">"NoTumor"</span>, printPlot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/run1-1.png" width="768"></p>
+<p><img src="fastCNV_HD_files/figure-html/run1-1.png" alt="" width="768"></p>
 </div>
 <div class="section level2">
 <h2 id="cnv-fraction">CNV fraction<a class="anchor" aria-label="anchor" href="#cnv-fraction"></a>
@@ -176,7 +177,7 @@ Seurat spatial plotting functions, as we’ll demonstrate on STColon1:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialFeaturePlot</a></span><span class="op">(</span><span class="va">HDBreast</span>, <span class="st">"cnv_fraction"</span><span class="op">)</span> <span class="op">|</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialPlot</a></span><span class="op">(</span><span class="va">HDBreast</span>, group.by <span class="op">=</span> <span class="st">"projected_annots_8um"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/plot_cnv_fraction-1.png" width="768"></p>
+<p><img src="fastCNV_HD_files/figure-html/plot_cnv_fraction-1.png" alt="" width="768"></p>
 <p>Here, we see some zones with higher CNV fractions than others. We can
 directly plot and test this:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -185,7 +186,7 @@ directly plot and test this:</p>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">projected_annots_8um</span>, <span class="va">cnv_fraction</span>, fill <span class="op">=</span> <span class="va">projected_annots_8um</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">1</span>, hjust <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/plot_cnv_fraction2-1.png" width="576"></p>
+<p><img src="fastCNV_HD_files/figure-html/plot_cnv_fraction2-1.png" alt="" width="576"></p>
 <p>The tumor zone has a higher CNV fraction, which is coherent.</p>
 <p>We can also plot the CNV per chromosome arm with the plotting
 functions from Seurat.</p>
@@ -202,24 +203,34 @@ functions from Seurat.</p>
 <span>                       rescaler <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">to</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">from</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
 <span>                         <span class="fu"><a href="https://scales.r-lib.org/reference/rescale_mid.html" class="external-link">rescale_mid</a></span><span class="op">(</span><span class="va">x</span>, to <span class="op">=</span> <span class="va">to</span>, mid <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span>                       <span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/plot_cnv_per_chromosome-1.png" width="672"></p>
+<p><img src="fastCNV_HD_files/figure-html/plot_cnv_per_chromosome-1.png" alt="" width="672"></p>
 </div>
 <div class="section level2">
 <h2 id="cnv-clusters">CNV clusters<a class="anchor" aria-label="anchor" href="#cnv-clusters"></a>
 </h2>
-<p>In addition to the CNV fraction, fastCNV can also compute the CNV
-clusters. These can be plotted with the Seurat plotting functions.
-CNVCluster can be quite long with Visium HD data. We recommend using
-<code>tumorLabel</code> to only cluster the malignant spots instead of
-all the spots to speed up the analysis. If your data has mostly tumor
-cells, it might be usefull to split you object into smaller objects to
-do the clustering.</p>
+<p>In addition to the CNV fraction, fastCNV also computes the CNV
+clusters. These can be plotted with the Seurat plotting functions.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">HDBreast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CNVCluster.html">CNVCluster</a></span><span class="op">(</span><span class="va">HDBreast</span>, referenceVar <span class="op">=</span> <span class="st">"projected_annots_8um"</span>, tumorLabel <span class="op">=</span> <span class="st">"Tumor"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialDimPlot</a></span><span class="op">(</span><span class="va">HDBreast</span>, group.by <span class="op">=</span> <span class="st">"cnv_clusters"</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="fastCNV_HD_files/figure-html/plot_cnv_clusters-1.png" alt="" width="480">
+Here, we see many different CNV clusters with minimal variability. We
+can compute the clusters only taking into account some annotations
+(“tumor” here for example)</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># To do the clustering with only certain annotations : </span></span>
+<span><span class="va">HDBreast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CNVCluster.html">CNVCluster</a></span><span class="op">(</span><span class="va">HDBreast</span>, referenceVar <span class="op">=</span> <span class="st">"projected_annots_8um"</span>,</span>
+<span>                       cellTypesToCluster <span class="op">=</span> <span class="st">"Tumor"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialDimPlot</a></span><span class="op">(</span><span class="va">HDBreast</span>, group.by <span class="op">=</span> <span class="st">"cnv_clusters"</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/plot_cnv_clusters-1.png" width="480"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p><img src="fastCNV_HD_files/figure-html/new_clusters-1.png" alt="" width="480"></p>
+<p>Or merge the clusters with great correlation.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># To merge the clusters with high correlation</span></span>
+<span><span class="va">HDBreast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mergeCNVClusters.html">mergeCNVClusters</a></span><span class="op">(</span><span class="va">HDBreast</span>, mergeThreshold <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span> <span class="co">#adjust the thershold to your liking</span></span>
+<span></span>
+<span><span class="fu"><a href="https://satijalab.org/seurat/reference/SpatialPlot.html" class="external-link">SpatialDimPlot</a></span><span class="op">(</span><span class="va">HDBreast</span>, group.by <span class="op">=</span> <span class="st">"cnv_clusters"</span><span class="op">)</span> </span></code></pre></div>
+<p><img src="fastCNV_HD_files/figure-html/new_clusters2-1.png" alt="" width="480"></p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.github.io/seurat-object/" class="external-link">SeuratObject</a></span><span class="op">)</span></span>
 <span></span>
@@ -227,12 +238,12 @@ do the clustering.</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://satijalab.github.io/seurat-object/reference/FetchData.html" class="external-link">FetchData</a></span><span class="op">(</span><span class="va">HDBreast</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cnv_clusters"</span>, <span class="st">"projected_annots_8um"</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">projected_annots_8um</span>, fill <span class="op">=</span> <span class="va">cnv_clusters</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_bar</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"fill"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">1</span>, hjust <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/cnv_props-1.png" width="480"></p>
-<p>Once we have the clusters, we can do the CNV heatmap again to
-visualize the clusters in it too.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p><img src="fastCNV_HD_files/figure-html/cnv_props-1.png" alt="" width="480"></p>
+<p>Once we have the desired clusters, we can do the CNV heatmap again to
+visualize the new clusters in it.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotCNVResultsHD.html">plotCNVResultsHD</a></span><span class="op">(</span><span class="va">HDBreast</span>, referenceVar <span class="op">=</span> <span class="st">"projected_annots_8um"</span>, printPlot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/cnvheatmapt_clusters-1.png" width="768"><img src="fastCNV_HD_files/figure-html/cnvheatmapt_clusters-2.png" width="768"></p>
+<p><img src="fastCNV_HD_files/figure-html/cnvheatmapt_clusters-1.png" alt="" width="768"></p>
 </div>
 <div class="section level2">
 <h2 id="cnv-tree">CNV tree<a class="anchor" aria-label="anchor" href="#cnv-tree"></a>
@@ -251,9 +262,9 @@ tree.</p></li>
 in the tree.</p></li>
 <li><p><code><a href="../reference/plotCNVTree.html">plotCNVTree()</a></code> will output the tree.</p></li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tree_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CNVTree.html">CNVTree</a></span><span class="op">(</span><span class="va">HDBreast</span>, values <span class="op">=</span><span class="st">"calls"</span>, cnv_thresh <span class="op">=</span> <span class="fl">0.09</span>, healthyClusters <span class="op">=</span> <span class="st">"0"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="fastCNV_HD_files/figure-html/tree_cnv-1.png" width="672"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tree_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CNVTree.html">CNVTree</a></span><span class="op">(</span><span class="va">HDBreast</span>, values <span class="op">=</span><span class="st">"calls"</span>, cnv_thresh <span class="op">=</span> <span class="fl">0.09</span>, healthyClusters <span class="op">=</span> <span class="st">"1"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="fastCNV_HD_files/figure-html/tree_cnv-1.png" alt="" width="672"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -266,7 +277,7 @@ in the tree.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

@@ -11,7 +11,7 @@ and cluster visualization on the dendrogram. The resulting cluster assignments a
 
     <a class="navbar-brand me-2" href="../index.html">fastCNV</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,13 +57,10 @@ and cluster visualization on the dendrogram. The resulting cluster assignments a
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CNVCluster</span><span class="op">(</span></span>
 <span>  <span class="va">seuratObj</span>,</span>
-<span>  referenceVar <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  tumorLabel <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  k <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  h <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  plotDendrogram <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  plotClustersOnDendrogram <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  plotElbowPlot <span class="op">=</span> <span class="cn">F</span></span>
+<span>  referenceVar <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cellTypesToCluster <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -75,14 +72,6 @@ and cluster visualization on the dendrogram. The resulting cluster assignments a
 <dd><p>A Seurat object containing a "genomicScores" assay with a matrix of genomic scores for clustering.</p></dd>
 
 
-<dt id="arg-referencevar">referenceVar<a class="anchor" aria-label="anchor" href="#arg-referencevar"></a></dt>
-<dd><p>The name of the metadata column in the Seurat object containing reference annotations.</p></dd>
-
-
-<dt id="arg-tumorlabel">tumorLabel<a class="anchor" aria-label="anchor" href="#arg-tumorlabel"></a></dt>
-<dd><p>The label within <code>referenceVar</code> that specifies the tumor/malignant population (can be any type of annotation).</p></dd>
-
-
 <dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
 <dd><p>Optional. The number of clusters to cut the dendrogram into. If <code>NULL</code>, the optimal number of clusters is determined automatically using the elbow method.</p></dd>
 
@@ -91,16 +80,12 @@ and cluster visualization on the dendrogram. The resulting cluster assignments a
 <dd><p>Optional. The height at which to cut the dendrogram for clustering. If both <code>k</code> and <code>h</code> are provided, <code>k</code> takes precedence.</p></dd>
 
 
-<dt id="arg-plotdendrogram">plotDendrogram<a class="anchor" aria-label="anchor" href="#arg-plotdendrogram"></a></dt>
-<dd><p>Logical. If <code>TRUE</code>, plots the dendrogram. Defaults to <code>FALSE</code>.</p></dd>
+<dt id="arg-referencevar">referenceVar<a class="anchor" aria-label="anchor" href="#arg-referencevar"></a></dt>
+<dd><p>Optional. The name of the metadata column in the Seurat object that contains reference annotations. If <code>NULL</code>, all observations will be clustered.</p></dd>
 
 
-<dt id="arg-plotclustersondendrogram">plotClustersOnDendrogram<a class="anchor" aria-label="anchor" href="#arg-plotclustersondendrogram"></a></dt>
-<dd><p>Logical. If <code>TRUE</code>, highlights the clusters on the dendrogram. Defaults to <code>FALSE</code>.</p></dd>
-
-
-<dt id="arg-plotelbowplot">plotElbowPlot<a class="anchor" aria-label="anchor" href="#arg-plotelbowplot"></a></dt>
-<dd><p>Logical. If <code>TRUE</code>, plots the elbow plot used for determining the optimal number of clusters. Defaults to <code>FALSE</code>.</p></dd>
+<dt id="arg-celltypestocluster">cellTypesToCluster<a class="anchor" aria-label="anchor" href="#arg-celltypestocluster"></a></dt>
+<dd><p>Optional. Cell type annotations to use for clustering. If <code>NULL</code> (default), all observations will be clustered.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -123,7 +108,7 @@ If <code>k</code> is not provided, the elbow method is applied to determine the 
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
