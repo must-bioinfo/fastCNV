@@ -128,6 +128,7 @@ fastCNV_10XHD <- function(seuratObjHD,
   invisible(gc())
 
   if (length(newHDobj) == 1) {
+    seuratObjHD[["rawGenomicScores"]] = Seurat::GetAssay(newHDobj, assay = "rawGenomicScores")
     seuratObjHD[["genomicScores"]] = Seurat::GetAssay(newHDobj, assay = "genomicScores")
     seuratObjHD$cnv_fraction = NA
     seuratObjHD$cnv_fraction[rownames(newHDobj@meta.data)] = newHDobj$cnv_fraction
@@ -137,7 +138,7 @@ fastCNV_10XHD <- function(seuratObjHD,
   } else if (length(seuratObjHD) > 1) {
     for (i in 1:length(newHDobj)){
       mid <- newHDobj[[i]]
-      seuratObjHD[[i]][["genomicScores"]] = Seurat::GetAssay(mid, assay = "genomicScores")
+      seuratObjHD[[i]][["rawGenomicScores"]] = Seurat::GetAssay(mid, assay = "rawGenomicScores")
       seuratObjHD[[i]]$cnv_fraction = NA
       seuratObjHD[[i]]$cnv_fraction[rownames(mid@meta.data)] = mid$cnv_fraction
       Seurat::DefaultAssay(seuratObjHD[[i]]) = assay
