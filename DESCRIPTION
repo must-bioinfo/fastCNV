@@ -1,6 +1,6 @@
 Package: fastCNV
 Title: fastCNV
-Version: 1.1.9
+Version: 1.1.10
 Authors@R: 
     c(person("Gadea", "Cabrejas", , "gadea.cabrejas-saiz@u-paris.fr", role = c("aut", "cre")),
       person("Clarice", "Groeneveld", , "clarice.groeneveld@inserm.fr", role = c("aut", "ctb")))
